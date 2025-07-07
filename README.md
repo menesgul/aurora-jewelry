@@ -1,171 +1,159 @@
-# 💍 Aurora Jewelry – Full-Stack Developer Internship Study Case
+# Aurora Jewelry – Product Listing Application
 
-Bu depo, **Full-Stack Developer Internship Study Case** kapsamında oluşturulmuş tam kapsamlı bir ürün listeleme uygulamasını içerir. Uygulama, **sadece verilen 4 kaynak dosyaya** tamamen sadık kalınarak hazırlanmıştır:
-
-📦 **Kullanılan Veri & Tasarım Kaynakları:**
-1. `products.json`
-2. `Assignment Brief for Full-Stack Developer Role.pdf`
-3. `page design.pdf`
-4. `Fonts` (Avenir & Montserrat)
-
-Tüm kararlar, uygulama ve tasarım %100 bu dosyalara dayalıdır.
-
----
-## 🌐 Canlı Demo
-
-- 🖥️ Frontend: [https://aurora-jewelry.vercel.app](https://aurora-jewelry.vercel.app)
-- ⚙️ Backend API: [https://aurora-jewelry-api.render.com/api/products](https://aurora-jewelry-api.render.com/api/products)
+This repository contains a full-stack product listing application developed as part of a technical assignment. The project consists of a backend RESTful API and a modern, responsive frontend, built to match a provided design and fulfill all assignment requirements.
 
 ---
 
-
-
-
-
-## 📂 Proje Yapısı
-
-/backend # Aurora Jewelry REST API (Node.js + Express)
-├── server.js
-├── routes/products.js
-├── controllers/productController.js
-├── utils/goldPriceFetcher.js
-├── data/products.json # Tüm ürün verisinin kaynağı
-/frontend # Aurora Jewelry UI (Next.js + TailwindCSS)
-├── pages/index.js
-├── components/ProductCard.jsx
-├── components/Carousel.jsx
-├── components/ColorPicker.jsx
-├── styles/globals.css
-├── public/fonts/Avenir.ttf
-├── public/fonts/Montserrat.ttf
+## 🚀 Live Demo
+- **Frontend:** [https://aurora-jewelry-eight.vercel.app](https://aurora-jewelry-eight.vercel.app)
+- **Backend API:** [https://aurora-jewelry-api.render.com/api/products](https://aurora-jewelry-api.render.com/api/products)
 
 ---
 
-## 🚀 Özellikler
-### 🔥 Backend (Node.js + Express)
-- **RESTful API**: Ürün verisini doğrudan `products.json` üzerinden sunar.
-- **Dinamik fiyat hesaplama**:
-  Fiyat = (popularityScore + 1) * weight * goldPrice
-- Altın fiyatı canlı olarak [GoldAPI](https://www.goldapi.io) üzerinden çekilir (ücretsiz API anahtarı gerektirir).
-- **Filtreleme API'si**:
-  - Sorgu parametreleri:
-    - `minPrice`
-    - `maxPrice`
-    - `minScore`
-    - `maxScore`
-  - Örnek:
-    ```
-    GET /api/products?minPrice=500&maxPrice=2000&minScore=3.5
-    ```
-  - API URL: `https://aurora-jewelry-api.render.com/api/products`
+## 📦 Project Structure
+
+```
+Aurora Jewelry/
+  backend/           # Node.js + Express REST API
+    controllers/
+    routes/
+    utils/
+    products.json    # Product data source
+    server.js
+    ...
+  frontend/          # Next.js + TailwindCSS UI
+    src/app/
+    public/
+    ...
+  README.md
+```
 
 ---
 
-### ✨ Frontend (Next.js + TailwindCSS)
-- **Tasarım PDF'ine %100 sadık, tamamen responsive UI**:
-  - Renkler: `#E6CA97` (Yellow Gold), `#D9D9D9` (White Gold), `#E1A4A9` (Rose Gold)
-  - Fontlar: **Avenir** ve **Montserrat**
-  - Font ağırlıkları, boyutları, margin ve padding'ler birebir uyumlu
-  - Hover efektleri ve etkileşimler tasarımla aynı
-- Özellikler:
-  - Ürün adı, dinamik fiyat (USD)
-  - Renk seçici (görseli anlık değiştirir)
-  - Popülarite puanı (5 üzerinden, 1 ondalık)
-  - Carousel:
-    - Masaüstü: yan oklar
-    - Mobil: swipe hareketleri
-  - Mobile-first yaklaşım: Tüm ekran boyutlarında kusursuz çalışır.
+## 📝 Assignment Brief (Summary)
+
+**Goal:** Build a product listing app with a backend API and a frontend UI. The backend serves product data from a JSON file and calculates dynamic prices using real-time gold prices. The frontend fetches and displays products according to a provided design, with features like color picker, rating, and carousel. Filtering and sorting are bonus features.
+
+**Backend Requirements:**
+- Serve product data from a JSON file via a RESTful API
+- Each product has: name, popularityScore, weight, images (3 type  colors)
+- Dynamic price calculation: `(popularityScore + 1) * weight * goldPrice` (USD)
+- Fetch real-time gold price from a public API (GoldAPI)
+- (Bonus) Filtering by price and popularity score
+
+**Frontend Requirements:**
+- Fetch and display products from the backend
+- Show product name, price, color picker (changes image), rating (out of 5, 1 decimal)
+- Responsive carousel (arrows + swipe, mobile & desktop)
+- Layout and style must closely match the provided design
+- (Bonus) Filtering and sorting UI
 
 ---
 
+## ✨ Features
 
+### Backend (Node.js + Express)
+- **RESTful API** serving product data from `products.json`
+- **Dynamic price calculation** using real-time gold price (GoldAPI)
+- **Filtering**: Query params for price range and popularity score
+- **Sorting**: By price or rating (asc/desc)
+- **Error handling** for missing/corrupt data or API failures
 
-
-## 📱 Ekran Görüntüleri
-
-### 🖥️ Masaüstü (1920px genişlik)
-- Tam genişlikte grid düzeni, birebir spacing
-- Buton ve renk swatch'larında hover efektleri
-- Carousel oklarla gezilebilir
-
-### 📱 Tablet (768px genişlik)
-- 2 kolonlu responsive grid
-- Carousel için dokunmatik swipe desteği
-- Tipografi orta ekranlara göre ölçeklenir
-
-### 📱 Mobil (375px genişlik)
-- Tek kolonlu layout
-- Renk seçici için büyük dokunmatik alanlar
-- Carousel için swipe hareketleri
-- iOS ve Android cihazlara tam uyum
-
-### 🎨 Tasarım Uyumu
-> Tüm detaylar **page design.pdf**'ten birebir alınmıştır:
-> 
-> ✅ Tam renk paleti  
-> ✅ Tam font ve tipografi  
-> ✅ Piksel hassasiyetinde spacing ve hizalama  
-> ✅ Etkileşimli bileşenler (hover, swipe, carousel)  
-> ✅ Tamamen responsive layout
+### Frontend (Next.js + TailwindCSS)
+- **Pixel-perfect, responsive UI** matching the design PDF
+- **Product cards**: Name, price, color picker, rating, image
+- **Color picker**: Instantly changes product image
+- **Rating**: Popularity score shown as 0.0–5.0 with precise star fill
+- **Carousel**: Swiper.js with arrows (desktop) and swipe (mobile)
+- **Filter bar**: Price and rating range sliders, sort dropdown
+- **Mobile-first**: Modal filter UI on mobile, grid on desktop
+- **Modern fonts**: Avenir & Montserrat
+- **Fast, accessible, and SEO-friendly**
 
 ---
 
-## 📦 Teknoloji Yığını
+## 🛠️ Technology Stack
 
-| Katman       | Teknoloji                    | Neden?                              |
-|--------------|-----------------------------|-------------------------------------|
-| Veri Kaynağı | **products.json**           | Statik JSON dosyası (verilen kaynak)|
-| Backend      | Node.js + Express           | Hızlı, minimal REST API             |
-| Canlı API    | GoldAPI                     | Canlı altın fiyatı çekimi           |
-| Frontend     | Next.js + TailwindCSS       | React tabanlı, SEO dostu            |
-| Carousel     | Swiper.js                   | Mobil & masaüstü desteği            |
-| Fontlar      | Avenir, Montserrat          | Tasarım PDF ile birebir uyumlu      |
-| Dağıtım      | Vercel (Frontend), Render (Backend) | Ücretsiz & hızlı hosting   |
+| Layer     | Technology               | Purpose                       |
+|-----------|---------------------------|--------------------------------|
+| Data      | products.json             | Static product data            |
+| Backend   | Node.js, Express          | REST API, filtering, pricing   |
+| Gold Price| GoldAPI                   | Real-time gold price           |
+| Frontend  | Next.js, React, Tailwind  | UI, SSR, styling               |
+| Carousel  | Swiper.js                 | Responsive carousel            |
+| Fonts     | Avenir, Montserrat        | Design fidelity                |
+| Hosting   | Vercel (frontend), Render (backend) | Deployment           |
 
 ---
 
-## 📥 Kurulum
+## 📥 Installation & Local Development
 
-### Repo Klonlama
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/aurora-jewelry.git
+git clone https://github.com/<menesgul>/aurora-jewelry.git
 cd aurora-jewelry
 ```
-________________________________________
-**Backend Kurulumu**
+
+### 2. Backend Setup
 ```bash
 cd backend
 npm install
+# Create a .env file with your GoldAPI key:
+echo GOLD_API_KEY=your_goldapi_key > .env
 node server.js
 ```
-Çalışma adresi: http://localhost:5000
-________________________________________
-**Frontend Kurulumu**
+- Runs at: http://localhost:5000
+
+### 3. Frontend Setup
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Çalışma adresi: http://localhost:3000
-________________________________________
+- Runs at: http://localhost:3000
 
-🌍 **API Endpointleri**
-| Yöntem | Endpoint | Açıklama |
-|--------|----------|----------|
-| GET    | /api/products | Tüm ürünleri döner |
-| GET    | /api/products?minPrice=100&maxPrice=500 | Fiyat aralığına göre filtreler |
-| GET    | /api/products?minScore=4.0 | Popülariteye göre filtreler |
+---
 
-________________________________________
+## 🌐 API Endpoints
 
-🌐 **Dağıtım**
-| Katman   | Platform | URL |
-|----------|----------|-----|
-| Backend  | Render   | https://aurora-jewelry-api.render.com |
-| Frontend | Vercel   | https://aurora-jewelry.vercel.app |
+| Method | Endpoint                                | Description                        |
+|--------|------------------ ----------------------|------------------------------------|
+| GET    | /api/products                           | Returns all products               |
+| GET    | /api/products?minPrice=100&maxPrice=500 | Filter by price                    |
+| GET    | /api/products?minScore=4.0              | Filter by rating                   |
+| GET    | /api/products?sort=price-asc            | Sort by price                      |
 
-________________________________________
+- **Query params:** `minPrice`, `maxPrice`, `minScore`, `maxScore`, `sort`
+- **Returns:** Array of products with calculated price and rating
 
-👨‍💻 **Author**
-•
-• 
+---
+
+## 🖼️ Screenshots is cared while designing.
+
+### Desktop
+- Grid layout, hover effects, color picker, carousel arrows
+
+### Tablet
+- 2-column responsive grid, swipe carousel
+
+### Mobile
+- Single column, modal filter, swipe carousel, large touch targets
+
+---
+
+## 📋 Assignment Requirements Coverage
+- [x] **Backend**: REST API, dynamic price, real-time gold, filtering
+- [x] **Frontend**: Design fidelity, responsive, color picker, rating, carousel
+- [x] **Bonus**: Filtering & sorting (UI + API)
+- [x] **Deployment**: Vercel (frontend), Render (backend)
+- [x] **Version control**: GitHub repo
+
+---
+
+## 👨‍💻 Author & Contact
+- Developed by Muhammet Enes Gül
+
+---
+
+## 📄 License
+This project is for demonstration and technical assessment purposes only. 
