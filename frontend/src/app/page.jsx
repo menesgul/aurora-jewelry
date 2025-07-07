@@ -54,7 +54,7 @@ export default function Home() {
     if (params.sort) {
       if (params.sort !== '') query.append('sort', params.sort);
     }
-    fetch(`http://localhost:5000/api/products?${query.toString()}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products?${query.toString()}`)
       .then((res) => {
         if (!res.ok) throw new Error("API error");
         return res.json();
