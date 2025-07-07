@@ -13,12 +13,19 @@ const COLOR_OPTIONS = [
   { key: 'rose', label: 'Rose Gold', color: '#E1A4A9' },
 ];
 
-function Star({ filled }) {
+function Star({ fillPercent }) {
+  // fillPercent: 0 (boş), 1 (tam dolu), 0.44 gibi değerler alabilir
   return (
     <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="starGradient">
+          <stop offset={`${fillPercent * 100}%`} stopColor="#E6CA97" />
+          <stop offset={`${fillPercent * 100}%`} stopColor="#D9D9D9" />
+        </linearGradient>
+      </defs>
       <path
         d="M10 15.27L16.18 18L14.54 11.97L19 7.24L12.81 6.63L10 1L7.19 6.63L1 7.24L5.46 11.97L3.82 18L10 15.27Z"
-        fill={filled ? '#E6CA97' : '#D9D9D9'}
+        fill="url(#starGradient)"
         stroke="#E6CA97"
         strokeWidth="0.5"
         className="transition-colors duration-200"
@@ -173,9 +180,11 @@ export default function Home() {
                       {COLOR_OPTIONS.find(c => c.key === selectedColors[idx])?.label}
                     </div>
                     <div className="flex items-center gap-1 mb-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} filled={i < Math.round(score)} />
-                      ))}
+                      {[...Array(5)].map((_, i) => {
+                        const scoreFloat = parseFloat(score);
+                        const fillPercent = Math.max(0, Math.min(1, scoreFloat - i));
+                        return <Star key={i} fillPercent={fillPercent} />;
+                      })}
                     </div>
                     <div className="font-avenir font-normal text-[14px] text-[#222]">{score}/5</div>
                   </div>
