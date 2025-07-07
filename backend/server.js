@@ -1,11 +1,22 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const productsRoute = require('./routes/products');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// CORS
+app.use(cors({
+  origin: 'http://localhost:3000' // Production'da burayı domaininle değiştir unutma aaaaa. !!!!!!!
+}));
+
+// Rate limiting
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 dakika
+  max: 100 // 15 dakikada 100 istek
+}));
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -15,5 +26,5 @@ app.get('/', (req, res) => {
 app.use('/api/products', productsRoute);
 
 app.listen(PORT, () => {
-  console.log(`Sunucu ${PORT} portunda çalışıyor.`);
+  console.log(`Server running on port ${PORT}`);
 });

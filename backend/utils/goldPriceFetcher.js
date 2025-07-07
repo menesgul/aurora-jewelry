@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const GOLD_API_KEY = process.env.GOLD_API_KEY || 'goldapi-fmousmcs33fic-io';
+const GOLD_API_KEY = process.env.GOLD_API_KEY;
 const GOLD_API_URL = 'https://www.goldapi.io/api/XAU/USD';
 
 async function fetchGoldPrice() {
@@ -11,11 +11,11 @@ async function fetchGoldPrice() {
         'Content-Type': 'application/json'
       }
     });
-    // GoldAPI'den dönen fiyat bilgisi 'price_gram_24k' alanında
+    // GoldAPI'den dönen fiyat bilgisi -24k ayarındaki gram altının fiyatı !!-
     return response.data.price_gram_24k;
   } catch (error) {
-    console.error('Altın fiyatı alınamadı:', error.message);
-    throw new Error('Altın fiyatı alınamadı');
+    console.error('Gold price could not be fetched:', error.message);
+    throw new Error('Gold price could not be fetched');
   }
 }
 
