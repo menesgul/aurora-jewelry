@@ -5,22 +5,12 @@ import { Navigation, Pagination, A11y } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'rc-slider/assets/index.css';
-import Slider from 'rc-slider';
 import FilterBar from "./FilterBar";
 
 const COLOR_OPTIONS = [
   { key: 'yellow', label: 'Yellow Gold', color: '#E6CA97' },
   { key: 'white', label: 'White Gold', color: '#D9D9D9' },
   { key: 'rose', label: 'Rose Gold', color: '#E1A4A9' },
-];
-
-const SORT_OPTIONS = [
-  { value: '', label: 'Sırala' },
-  { value: 'price-asc', label: 'Ucuzdan Pahalıya' },
-  { value: 'price-desc', label: 'Pahalıdan Ucuza' },
-  { value: 'rating-desc', label: 'Yüksek Puan → Düşük' },
-  { value: 'rating-asc', label: 'Düşük Puan → Yüksek' },
 ];
 
 function Star({ filled }) {
@@ -39,27 +29,38 @@ function Star({ filled }) {
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedColors, setSelectedColors] = useState({});
   const [showFilters, setShowFilters] = useState(false);
-  
   // Filtreleme state'leri
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [scoreRange, setScoreRange] = useState([0, 5]);
-
   const [sort, setSort] = useState('');
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+  // Backend'den ürünleri filtreli ve sıralı çek
+  const fetchProducts = (params = {}) => {
+    setLoading(true);
+    setError(null);
+    const query = new URLSearchParams();
+    if (params.priceRange) {
+      if (params.priceRange[0] !== 0) query.append('minPrice', params.priceRange[0]);
+      if (params.priceRange[1] !== 1000) query.append('maxPrice', params.priceRange[1]);
+    }
+    if (params.scoreRange) {
+      if (params.scoreRange[0] !== 0) query.append('minScore', params.scoreRange[0]);
+      if (params.scoreRange[1] !== 5) query.append('maxScore', params.scoreRange[1]);
+    }
+    if (params.sort) {
+      if (params.sort !== '') query.append('sort', params.sort);
+    }
+    fetch(`http://localhost:5000/api/products?${query.toString()}`)
       .then((res) => {
-        if (!res.ok) throw new Error("API hatası");
+        if (!res.ok) throw new Error("API error");
         return res.json();
       })
       .then((data) => {
         setProducts(data);
-        setFilteredProducts(data);
         const initialColors = {};
         data.forEach((_, idx) => {
           initialColors[idx] = 'yellow';
@@ -71,24 +72,17 @@ export default function Home() {
         setError(err.message);
         setLoading(false);
       });
-  }, []);
-
-  // Sıralama fonksiyonu
-  const sortProducts = (arr) => {
-    if (sort === 'price-asc') return [...arr].sort((a, b) => a.price - b.price);
-    if (sort === 'price-desc') return [...arr].sort((a, b) => b.price - a.price);
-    if (sort === 'rating-desc') return [...arr].sort((a, b) => (b.popularityScore - a.popularityScore));
-    if (sort === 'rating-asc') return [...arr].sort((a, b) => (a.popularityScore - b.popularityScore));
-    return arr;
   };
 
-  // Filtreleme fonksiyonu
+  // İlk yüklemede tüm ürünleri çek
+  useEffect(() => {
+    fetchProducts({});
+    // eslint-disable-next-line
+  }, []);
+
+  // Filtreleri uygula
   const applyFilters = () => {
-    let filtered = [...products];
-    filtered = filtered.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
-    filtered = filtered.filter(p => (p.popularityScore * 5).toFixed(1) >= scoreRange[0] && (p.popularityScore * 5).toFixed(1) <= scoreRange[1]);
-    filtered = sortProducts(filtered);
-    setFilteredProducts(filtered);
+    fetchProducts({ priceRange, scoreRange, sort });
     setShowFilters(false);
   };
 
@@ -97,7 +91,7 @@ export default function Home() {
     setPriceRange([0, 1000]);
     setScoreRange([0, 5]);
     setSort('');
-    setFilteredProducts(products);
+    fetchProducts({});
     setShowFilters(false);
   };
 
@@ -105,13 +99,12 @@ export default function Home() {
     setSelectedColors((prev) => ({ ...prev, [idx]: color }));
   };
 
-  const hasActiveFilters = priceRange[0] !== 0 || priceRange[1] !== 1000 || scoreRange[0] !== 0 || scoreRange[1] !== 5;
+ const handleSortChange = (value) => {
+  setSort(value); // state güncellesin sadece okkey. 
+};
+  
 
-  // Sıralama değiştiğinde anında uygula
-  useEffect(() => {
-    setFilteredProducts((prev) => sortProducts(prev));
-    // eslint-disable-next-line
-  }, [sort]);
+  const hasActiveFilters = priceRange[0] !== 0 || priceRange[1] !== 1000 || scoreRange[0] !== 0 || scoreRange[1] !== 5;
 
   return (
     <main className="min-h-screen bg-white flex flex-col items-center py-10">
@@ -126,22 +119,21 @@ export default function Home() {
         scoreRange={scoreRange}
         setScoreRange={setScoreRange}
         sort={sort}
-        setSort={setSort}
+        setSort={handleSortChange}
         applyFilters={applyFilters}
         clearFilters={clearFilters}
         hasActiveFilters={hasActiveFilters}
-        filteredCount={filteredProducts.length}
+        filteredCount={products.length}
       />
-
       <div className="w-full max-w-7xl px-4">
-        {loading && <div className="text-center">Yükleniyor...</div>}
+        {loading && <div className="text-center">Loading...</div>}
         {error && <div className="text-red-500 text-center">{error}</div>}
-        {!loading && !error && filteredProducts.length === 0 && (
+        {!loading && !error && products.length === 0 && (
           <div className="text-center text-gray-500 font-montserrat">
-            Filtre kriterlerinize uygun ürün bulunamadı.
+            No products found for your filter criteria.
           </div>
         )}
-        {filteredProducts.length > 0 && (
+        {products.length > 0 && (
           <Swiper
             modules={[Navigation, Pagination, A11y]}
             spaceBetween={32}
@@ -154,13 +146,15 @@ export default function Home() {
             }}
             className="!pb-12"
           >
-            {filteredProducts.map((product, idx) => {
+            {products.map((product, idx) => {
               const score = (product.popularityScore * 5).toFixed(1);
               return (
                 <SwiperSlide key={idx}>
-                  <div className="bg-gray-50 rounded-xl p-4 flex flex-col items-center shadow-sm hover:shadow-lg transition-shadow duration-200 group cursor-pointer">
+                  <div
+                    className="bg-gray-50 rounded-xl p-4 flex flex-col items-center shadow-sm transition-all duration-300 group cursor-pointer border border-transparent hover:border-[#E6CA97] hover:shadow-[0_4px_24px_0_rgba(230,202,151,0.15)]"
+                  >
                     <div className="w-full aspect-square flex items-center justify-center mb-4">
-                      <img src={product.images?.[selectedColors[idx] || 'yellow']} alt={product.name} className="object-contain h-40 transition-all duration-200 group-hover:scale-105" />
+                      <img src={product.images?.[selectedColors[idx] || 'yellow']} alt={product.name} className="object-contain h-40 transition-all duration-300 group-hover:scale-105" />
                     </div>
                     <div className="font-montserrat font-medium text-[15px] mb-1 text-center text-[#222]">{product.name}</div>
                     <div className="font-montserrat font-normal text-[15px] mb-2 text-center text-[#222]">${product.price} USD</div>
