@@ -12,27 +12,36 @@ const COLOR_OPTIONS = [
   { key: 'white', label: 'White Gold', color: '#D9D9D9' },
   { key: 'rose', label: 'Rose Gold', color: '#E1A4A9' },
 ];
+function Star({ fillPercent, id }) {
+  const clipId = `starClip-${id}-${Math.random().toString(36).substr(2, 5)}`; // Benzersiz ID
 
-function Star({ fillPercent }) {
-  // fillPercent: 0 (boş), 1 (tam dolu), 0.44 gibi değerler alabilir
   return (
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="starGradient">
-          <stop offset={`${fillPercent * 100}%`} stopColor="#E6CA97" />
-          <stop offset={`${fillPercent * 100}%`} stopColor="#D9D9D9" />
-        </linearGradient>
-      </defs>
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+      {/* Boş yıldız */}
       <path
         d="M10 15.27L16.18 18L14.54 11.97L19 7.24L12.81 6.63L10 1L7.19 6.63L1 7.24L5.46 11.97L3.82 18L10 15.27Z"
-        fill="url(#starGradient)"
+        fill="#D9D9D9"
         stroke="#E6CA97"
         strokeWidth="0.5"
-        className="transition-colors duration-200"
+      />
+      {/* ClipPath tanımı */}
+      <defs>
+        <clipPath id={clipId}>
+          <rect x="0" y="0" width={20 * fillPercent} height="20" />
+        </clipPath>
+      </defs>
+      {/* Dolu yıldız kısmı */}
+      <path
+        d="M10 15.27L16.18 18L14.54 11.97L19 7.24L12.81 6.63L10 1L7.19 6.63L1 7.24L5.46 11.97L3.82 18L10 15.27Z"
+        fill="#E6CA97"
+        stroke="#E6CA97"
+        strokeWidth="0.5"
+        clipPath={`url(#${clipId})`}
       />
     </svg>
   );
 }
+
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -183,7 +192,7 @@ export default function Home() {
                       {[...Array(5)].map((_, i) => {
                         const scoreFloat = parseFloat(score);
                         const fillPercent = Math.max(0, Math.min(1, scoreFloat - i));
-                        return <Star key={i} fillPercent={fillPercent} />;
+                        return <Star key={i} id={i} fillPercent={fillPercent} />;
                       })}
                     </div>
                     <div className="font-avenir font-normal text-[14px] text-[#222]">{score}/5</div>
