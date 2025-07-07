@@ -16,16 +16,28 @@
 - [x] Hatalı istekler ve hata yönetimi için uygun yanıtlar ekle
 
 ## 3. Frontend Geliştirme
-- [ ] Next.js + TailwindCSS ile frontend başlat
-- [ ] Tasarıma %100 sadık ana ürün listeleme sayfası oluştur
-- [ ] API'den ürünleri çek ve ekranda göster
-- [ ] Renk seçici (color picker) ile ürün görselini değiştir
-- [ ] Popülarite puanını 5 üzerinden, 1 ondalık göster
-- [ ] Carousel (Swiper.js) ile ürünler arasında gezinme
-- [ ] Responsive ve mobil uyumlu tasarım
-- [ ] Hover efektleri ve interaktif detaylar
-- [ ] Fontları (Avenir, Montserrat) projeye ekle
+- [x] Next.js + TailwindCSS ile frontend başlat
+- [x] Fontları (Avenir, Montserrat) projeye ekle
+- [x] Tasarıma %100 sadık ana ürün listeleme sayfası oluştur
+- [x] API'den ürünleri çek ve ekranda göster
+- [x] Renk seçici (color picker) ile ürün görselini değiştir
+- [x] Popülarite puanını 5 üzerinden, 1 ondalık göster
+- [x] Carousel (Swiper.js) ile ürünler arasında gezinme
+- [x] Responsive ve mobil uyumlu tasarım
+- [x] Hover efektleri ve interaktif detaylar
 
 ## 4. Ekstra ve Deploy
 - [ ] Canlıya alma (Vercel/Render)
-- [ ] README.md güncellemesi ve son kontroller 
+- [ ] README.md güncellemesi ve son kontroller
+
+## 5. Yeni Eklenen Özellikler
+- [ ] 1. Ürün detay sayfası oluşturma
+- [ ] 2. Sepete ekleme fonksiyonalitesi
+- [ ] 3. Kullanıcı girişi ve kayıt sistemi
+- [ ] 4. Favori ürünler listesi
+- [ ] 5. Ürün arama özelliği
+- [ ] 6. Kategori filtreleme
+- [ ] 7. Sıralama seçenekleri (fiyat, popülarite, isim)
+- [ ] 8. Ürün karşılaştırma özelliği
+- [x] 9. Frontend'de filtreleme özelliği ekleme
+- [ ] 10. Admin paneli oluşturma 

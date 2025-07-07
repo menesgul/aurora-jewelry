@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const GOLD_API_KEY = process.env.GOLD_API_KEY || 'YOUR_GOLDAPI_KEY';
+const GOLD_API_KEY = process.env.GOLD_API_KEY || 'goldapi-fmousmcs33fic-io';
 const GOLD_API_URL = 'https://www.goldapi.io/api/XAU/USD';
 
 async function fetchGoldPrice() {
