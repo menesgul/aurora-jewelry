@@ -8,7 +8,10 @@ const PORT = process.env.PORT || 5000;
 
 // CORS
 app.use(cors({
-  origin: 'http://localhost:3000' // Production'da burayı domaininle değiştir unutma aaaaa. !!!!!!!
+  origin:  [ 
+    'https://aurora-jewelry-eight.vercel.app', // vercel prod domainim.
+    'http://localhost:3000' // localde güncelleme icin dursun. 
+  ]
 }));
 
 // Rate limiting

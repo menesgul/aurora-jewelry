@@ -86,7 +86,7 @@ export default function Home() {
     setShowFilters(false);
   };
 
-  // Filtreleri temizle
+  // Filtreleri temizle set 0 yapıyoz.
   const clearFilters = () => {
     setPriceRange([0, 1000]);
     setScoreRange([0, 5]);
